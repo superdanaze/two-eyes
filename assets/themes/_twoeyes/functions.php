@@ -440,6 +440,15 @@ class ELA_Funcs {
 		}
 	}
 
+
+	public static function page_id_from_url() {
+		$str = $_SERVER['QUERY_STRING'];
+		$start = strpos($str, "=") + 1;
+		$end = strpos($str, "&");
+
+		return substr($str, $start, $end - $start);
+	}
+
 }
 
 
@@ -677,6 +686,26 @@ class ELA_Elements {
 		$v = '<iframe class="lazy loadImg full__container rel '. $cls .'" data-src="https://player.vimeo.com/video/'. $id .'?autoplay=0&loop=0&muted=0&byline=0&portrait=0&title=0" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>';
 
 		return $v;
+	}
+
+
+	public static function ela_markup( $wrap, $atts, $content ) {
+		//	simple markup function for when genesis outputs extra html
+		//	use this in some instances when leveraging ACF flexible content
+
+		$output = sprintf( '<%s ', $wrap );
+
+		foreach( $atts as $key => $attr ) {
+			if ( !$attr ) continue;
+			$output .= sprintf( '%s="%s"', $key, $attr );
+		}
+
+		$output .= ">";
+		$output .= $content;
+
+		$output .= sprintf( '</%s>', $wrap );
+
+		return $output;
 	}
 	
 }
